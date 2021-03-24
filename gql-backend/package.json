@@ -1,0 +1,17 @@
+{
+  "name": "part8",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": "wade",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server": "^2.21.2",
+    "graphql": "^15.5.0",
+    "uuid": "^8.3.2"
+  }
+}
