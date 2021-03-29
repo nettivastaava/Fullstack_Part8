@@ -12,8 +12,6 @@ const options = [
   { value: 'String', label: 'Sandi Metz' }
 ];
 
-
-
 const Authors = (props) => {
   const [option, setOption] = useState(null)
   const [yearBorn, setYearBorn] = useState('')
