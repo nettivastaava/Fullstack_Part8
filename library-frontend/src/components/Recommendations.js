@@ -1,15 +1,29 @@
 import React from 'react'
+import { gql, useQuery } from '@apollo/client'
+import { ME } from '../queries'
 
-const Books = (props) => {
+const Recommendations = (props) => {
+  const userData = useQuery(ME)
+
+  if (userData.loading) {
+    return <div>loading...</div>
+  }
+    
   if (!props.show) {
     return null
   }
+  const user = userData.data.me
 
-  const books = props.books
-  
+  let books = props.books
+  console.log('fav genre: ', user)
+  console.log('books: ', books)
+
+  books = books.filter(b => b.genres.includes(user.favoriteGenre))
+
   return (
     <div>
-      <h2>books</h2>
+      <h2>recommendations</h2>
+      <p>books in your favorite genre patterns</p>
       <table>
         <tbody>
           <tr>
@@ -34,4 +48,4 @@ const Books = (props) => {
   )
 }
 
-export default Books
+export default Recommendations

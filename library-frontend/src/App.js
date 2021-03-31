@@ -3,6 +3,7 @@ import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
 import LoginForm from './components/LoginForm'
+import Recommendations from './components/Recommendations'
 import { gql, useQuery, useApolloClient } from '@apollo/client'
 import { ALL_BOOKS, ALL_AUTHORS } from './queries'
 
@@ -25,6 +26,7 @@ const App = () => {
     setToken(null)
     localStorage.clear()
     client.resetStore()
+    setPage('login')
   }
 
   if (bookResult.loading || authorResult.loading)  {
@@ -37,17 +39,13 @@ const App = () => {
         <div>
           <button onClick={() => setPage('authors')}>authors</button>
           <button onClick={() => setPage('books')}>books</button>
-          <button onClick={() => setPage('add')}>add book</button>
           <button onClick={() => setPage('login')}>login</button>
         </div>
         <Authors
-          show={page === 'authors'} authors={authorResult.data.allAuthors}
+          show={page === 'authors'} authors={authorResult.data.allAuthors} token={token}
         />
         <Books
           show={page === 'books'} books={bookResult.data.allBooks}
-        />
-        <NewBook
-          show={page === 'add'}
         />
         <LoginForm
             setToken={setToken}
@@ -65,16 +63,20 @@ const App = () => {
         <button onClick={() => setPage('authors')}>authors</button>
         <button onClick={() => setPage('books')}>books</button>
         <button onClick={() => setPage('add')}>add book</button>
+        <button onClick={()=> setPage('recommend')}>recommend</button>
         <button onClick={logout}>logout</button>
       </div>
       <Authors
-        show={page === 'authors'} authors={authorResult.data.allAuthors}
+        show={page === 'authors'} authors={authorResult.data.allAuthors} token={token}
       />
       <Books
         show={page === 'books'} books={bookResult.data.allBooks}
       />
       <NewBook
         show={page === 'add'}
+      />
+      <Recommendations
+        show={page === 'recommend'} books={bookResult.data.allBooks}
       />
     </div>
   )
