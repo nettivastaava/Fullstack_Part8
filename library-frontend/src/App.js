@@ -70,7 +70,7 @@ const App = () => {
         show={page === 'authors'} authors={authorResult.data.allAuthors} token={token}
       />
       <Books
-        show={page === 'books'} books={bookResult.data.allBooks}
+        show={page === 'books'}
       />
       <NewBook
         show={page === 'add'}

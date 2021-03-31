@@ -42,6 +42,7 @@ const typeDefs = gql`
     allBooks(author: String, genre: String): [Book!]!
     allAuthors: [Author!]!
     me: User
+    allGenres: [String]!
   }
 
   type User {
@@ -96,6 +97,15 @@ const resolvers = {
     },
     me: (root, args, context) => {
       return context.currentUser
+    },
+    allGenres: async () => {
+      const books = await Book.find({})
+      const genres = books.map(book => book.genres)
+      .reduce((previous, current) => previous.concat(current))
+      console.log('dup ', genres)
+      const uniqueGenres = [...new Set(genres)];
+      console.log('uniq ', uniqueGenres)
+      return uniqueGenres
     }
     },
   Author: {
