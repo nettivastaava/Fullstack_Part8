@@ -4,8 +4,8 @@ import Books from './components/Books'
 import NewBook from './components/NewBook'
 import LoginForm from './components/LoginForm'
 import Recommendations from './components/Recommendations'
-import { gql, useQuery, useApolloClient } from '@apollo/client'
-import { ALL_BOOKS, ALL_AUTHORS } from './queries'
+import { gql, useQuery, useApolloClient, useSubscription } from '@apollo/client'
+import { ALL_BOOKS, ALL_AUTHORS, BOOK_ADDED } from './queries'
 
 const App = () => {
   const [page, setPage] = useState('authors')
@@ -28,6 +28,13 @@ const App = () => {
     client.resetStore()
     setPage('login')
   }
+
+  useSubscription(BOOK_ADDED, {
+    onSubscriptionData: ({ subscriptionData }) => {
+      console.log(subscriptionData)
+      window.alert("Book added successfully");
+    }
+  })
 
   if (bookResult.loading || authorResult.loading)  {
     return <div>loading...</div>
