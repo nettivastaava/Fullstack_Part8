@@ -1,0 +1,42 @@
+services:
+  nginx:
+    image: nginx:1.20.1
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - 8080:80
+    container_name: reverse-proxy 
+  app:
+    image: gql-front
+    build:
+      context: ./library-frontend
+      dockerfile: Dockerfile
+    volumes:
+      - ./library-frontend:/usr/src/app
+    ports:
+      - 3000:3000
+    container_name: gql-front
+  server:
+    image: gql-back
+    build:
+      context: ./gql-backend 
+      dockerfile: Dockerfile 
+    volumes:
+      - ./gql-backend:/usr/src/app 
+    ports:
+      - 4000:3000
+    container_name: gql-back
+    environment:
+      - MONGO_URL=mongodb://the_username:the_password@gql-app_mongo_1/the_database 
+  mongo:
+    image: mongo
+    container_name: gql-app_mongo_1
+    ports:
+      - 3456:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+      MONGO_INITDB_DATABASE: database
+    volumes:
+      - ./gql-backend/mongo/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+      - ./gql-backend/mongo_data:/data/db
